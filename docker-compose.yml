@@ -1,0 +1,14 @@
+services:
+  finance-mf:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: finance-mf
+    ports:
+      - "4202:80"
+    networks:
+      - app-network
+
+networks:
+  app-network:
+    driver: bridge
