@@ -1,0 +1,28 @@
+<section class="search-card" id="competence-filter-card">
+  <form id="competence-filter-form" class="filter-grid" (ngSubmit)="search.emit()">
+    <div class="field field-compact" id="competence-field">
+      <label for="competence-datepicker-input" id="competence-label" style="display: none">Competencia</label>
+      <p-datepicker
+        id="competence-datepicker"
+        inputId="competence-datepicker-input"
+        name="selectedCompetenceDate"
+        [showIcon]="true"
+        view="month"
+        dateFormat="mm/yy"
+        [showButtonBar]="false"
+        appendTo="body"
+        [ngModel]="selectedCompetenceDate"
+        (ngModelChange)="selectedCompetenceDateChange.emit($event)"
+      ></p-datepicker>
+    </div>
+
+    <button
+      id="competence-search-button"
+      type="submit"
+      class="btn btn-primary"
+    >
+      <i class="pi pi-search" style="margin-right: .4rem"></i>
+      Pesquisar
+    </button>
+  </form>
+</section>

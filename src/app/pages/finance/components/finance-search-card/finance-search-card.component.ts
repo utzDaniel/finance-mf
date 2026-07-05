@@ -1,0 +1,93 @@
+import { CommonModule } from '@angular/common';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { DatePickerModule } from 'primeng/datepicker';
+
+@Component({
+  selector: 'app-finance-search-card',
+  standalone: true,
+  imports: [CommonModule, FormsModule, DatePickerModule],
+  templateUrl: './finance-search-card.component.html',
+  styles: [`
+    .search-card {
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      margin-bottom: 0;
+      padding: 0;
+    }
+
+    .filter-grid {
+      display: flex;
+      align-items: center;
+      gap: .6rem;
+      min-width: 280px;
+    }
+
+    .field {
+      display: flex;
+      flex-direction: column;
+      gap: .35rem;
+    }
+
+    .field-compact {
+      gap: 0;
+    }
+
+    :host ::ng-deep #competence-datepicker {
+      width: 190px;
+    }
+
+    :host ::ng-deep #competence-datepicker .p-inputtext {
+      height: 2.5rem;
+      width: 100%;
+    }
+
+    .btn {
+      border: 1px solid transparent;
+      border-radius: .6rem;
+      padding: .65rem 1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: transform .15s ease, opacity .15s ease, background-color .15s ease;
+    }
+
+    .btn:disabled {
+      opacity: .6;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .btn-primary {
+      background: #2563eb;
+      color: #fff;
+      min-width: 130px;
+      height: 2.5rem;
+    }
+
+    .btn-primary:hover:not(:disabled) {
+      transform: translateY(-1px);
+      background: #1d4ed8;
+    }
+
+    @media (max-width: 767px) {
+      .filter-grid {
+        width: 100%;
+      }
+
+      :host ::ng-deep #competence-datepicker {
+        width: 100%;
+      }
+
+      .btn-primary {
+        min-width: 110px;
+      }
+    }
+  `],
+})
+export class FinanceSearchCardComponent {
+  selectedCompetenceDate: Date | undefined = new Date();
+
+  @Output() readonly selectedCompetenceDateChange = new EventEmitter<Date | null>();
+  @Output() readonly search = new EventEmitter<void>();
+}

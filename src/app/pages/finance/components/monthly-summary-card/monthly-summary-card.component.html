@@ -1,0 +1,110 @@
+<div class="card">
+  <!-- Cabeçalho -->
+  <div class="card-header">
+    <h2 class="card-title">Resumo do Mês
+      @if (hasFamily()) {
+          <span id="family-view-nome" style="color: #059669; font-weight: 700;"> da Familia {{ monthlySummary()!.familyName }}</span>
+        }
+
+    </h2>
+    <div class="edit-actions">
+    @if (!editMode()) {
+      <p-button
+        id="btn-summary-salary-edit"
+        label="Editar"
+        icon="pi pi-pencil"
+        [outlined]="true"
+        size="small"
+        (onClick)="startEdit()"
+      />
+    } @else {
+        <p-button
+          id="btn-summary-salary-cancel"
+          label="Cancelar"
+          [outlined]="true"
+          severity="secondary"
+          size="small"
+          (onClick)="cancel()"
+          [disabled]="saving()"
+        />
+        <p-button
+          id="btn-summary-salary-save"
+          label="Salvar"
+          icon="pi pi-check"
+          size="small"
+          (onClick)="save()"
+          [loading]="saving()"
+        />
+    }
+    </div>
+    
+  </div>
+
+  <!-- Modo Visualização -->
+    <div class="fields-list">
+      <div class="field-row">
+        <div class="field-icon" style="background-color: #5f83ff">
+          <i class="pi pi-user" style="color: #FFFFFF"></i>
+        </div>
+        <div>
+          <div class="field-label">Nome</div>
+          <div id="summary-salary-view-user-name" class="field-value">@if (monthlySummary()) { {{ monthlySummary()!.nome }} {{ monthlySummary()!.sobrenome }} }</div>
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field-icon" style="background-color: #5f83ff">
+          <i class="pi pi-wallet" style="color: #FFFFFF"></i>
+        </div>
+        @if (!editMode()) {
+        <div>
+          <div class="field-label">Salario bruto</div>
+          <div id="summary-salary-view-user-gross" class="field-value">@if (monthlySummary()) { {{ formatCurrency(monthlySummary()!.userGrossSalary) }} }</div>
+        </div>
+        }@else{
+          <div class="edit-group">
+            <p-inputnumber id="summary-salary-user-gross" [(ngModel)]="userGrossSalary" inputId="locale-user" [minFractionDigits]="2" (ngModelChange)="fieldErrors['userGrossSalary'] = ''" placeholder="Salario bruto" class="w-full" />
+        @if (fieldErrors['userGrossSalary']) {
+          <small id="summary-salary-user-gross-error" class="error-msg">{{ fieldErrors['userGrossSalary'] }}</small>
+        }
+         </div>
+        }
+         <div class="field-icon" style="background-color: #5f83ff">
+          <i class="pi pi-dollar" style="color: #FFFFFF"></i>
+        </div>
+
+        @if (!editMode()) {
+        <div>
+          <div class="field-label">Salario liquido</div>
+          <div id="summary-salary-view-user-net" class="field-value">@if (monthlySummary()) { {{ formatCurrency(monthlySummary()!.userNetSalary) }} }</div>
+        </div>
+        }@else{
+          <div class="edit-group">
+            <p-inputnumber id="summary-salary-user-net" [(ngModel)]="userNetSalary" inputId="locale-user-net" [minFractionDigits]="2" (ngModelChange)="fieldErrors['userNetSalary'] = ''" placeholder="Salario liquido" class="w-full" />
+        @if (fieldErrors['userNetSalary']) {
+          <small id="summary-salary-user-net-error" class="error-msg">{{ fieldErrors['userNetSalary'] }}</small>
+        }
+         </div>
+        }
+        @if (hasFamily()) {
+        <div class="field-icon" style="background-color: #059669">
+          <i class="pi pi-wallet" style="color: #FFFFFF"></i>
+        </div>
+        <div>
+          <div class="field-label">Salario bruto Familia</div>
+          <div id="summary-salary-view-family-gross" class="field-value">@if (monthlySummary()) { {{ formatCurrency(monthlySummary()!.familyGrossSalary) }} }</div>
+        </div>
+        <div class="field-icon" style="background-color: #059669">
+          <i class="pi pi-dollar" style="color: #FFFFFF"></i>
+        </div>
+        <div>
+          <div class="field-label">Salario liquido Familia</div>
+          <div id="summary-salary-view-family-net" class="field-value">@if (monthlySummary()) { {{ formatCurrency(monthlySummary()!.familyNetSalary) }} }</div>
+        </div>
+
+        }
+        
+      </div>
+    </div>
+  
+</div>
+

@@ -1,18 +1,29 @@
 <div class="page-wrap">
   <!-- Cabeçalho -->
   <div class="page-header">
-    <div class="page-icon" style="background-color: var(--p-primary-100, #e0e7ff)">
-      <i class="pi pi-dollar" style="font-size: 1.25rem; color: var(--p-primary-500, #6366f1)"></i>
+    <div class="page-header-left">
+      <div class="page-icon" style="background-color: var(--p-primary-100, #e0e7ff)">
+        <i class="pi pi-dollar" style="font-size: 1.25rem; color: var(--p-primary-500, #6366f1)"></i>
+      </div>
+      <h1 class="page-title">Minha Finança</h1>
     </div>
-    <h1 class="page-title">Minha Finança</h1>
+    <app-finance-search-card
+          (selectedCompetenceDateChange)="onCompetenceDateSelect($event)"
+          (search)="onSearch()"
+    />
   </div>
 
-    <!-- Breadcrumb -->
+  <!-- Breadcrumb -->
   <div class="breadcrumb">
     <span>Início</span>
     <span style="margin: 0 .25rem">›</span>
     <span>Finança</span>
   </div>
+
+  <app-monthly-summary-card 
+    [competenceDate]="searchCompetenceDate"
+  />
+
 
 </div>
 

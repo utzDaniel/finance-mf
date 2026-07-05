@@ -1,15 +1,19 @@
-import { Component, OnInit, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ToastModule } from 'primeng/toast';
+import { Component, OnInit } from '@angular/core';
 import { MessageService } from 'primeng/api';
+import { ToastModule } from 'primeng/toast';
 
+import { FinanceSearchCardComponent } from './components/finance-search-card/finance-search-card.component';
+import { MonthlySummaryCardComponent } from './components/monthly-summary-card/monthly-summary-card.component';
 
 @Component({
   selector: 'app-finance',
   standalone: true,
   imports: [
-    CommonModule,
-    ToastModule,
+    CommonModule, 
+    ToastModule, 
+    FinanceSearchCardComponent,
+    MonthlySummaryCardComponent
   ],
   providers: [MessageService],
   templateUrl: './finance.component.html',
@@ -47,7 +51,8 @@ import { MessageService } from 'primeng/api';
       --p-button-outlined-primary-hover-color: #2563eb;
     }
     .page-wrap { padding: 1rem; }
-    .page-header { display: flex; align-items: center; gap: .75rem; margin-bottom: .25rem; }
+    .page-header { display: flex; justify-content: space-between; align-items: center; gap: .75rem; margin-bottom: .25rem; }
+    .page-header-left { display: flex; align-items: center; gap: .75rem; margin-bottom: .25rem; }
     .page-title { font-size: 1.875rem; font-weight: 700; margin: 0; }
     .page-icon { display: flex; align-items: center; justify-content: center; width: 2.5rem; height: 2.5rem; border-radius: 50%; }
     .breadcrumb { font-size: .875rem; color: #6b7280; margin-bottom: 1.5rem; margin-left: 3.25rem; }
@@ -58,10 +63,46 @@ import { MessageService } from 'primeng/api';
   `],
 })
 export class FinanceComponent implements OnInit {
-
+  competenceDate: string | null = null;
+  competenceDateValid: boolean = false;
+  searchCompetenceDate: string | null = null;
 
   ngOnInit(): void {
-    // Initialization logic here
+    this.competenceDate = this.buildCompetenceDate(new Date());
+    this.competenceDateValid = true;
+    this.onSearch();
+  }
+
+  onCompetenceDateSelect(date: Date | null): void {
+    if (!date) {
+      this.competenceDateValid = false;
+      return;
+    }
+    const newCompetenceDate = this.buildCompetenceDate(date);
+
+    this.competenceDateValid = newCompetenceDate !== this.competenceDate;
+
+    if(this.competenceDateValid) {
+      this.competenceDate = newCompetenceDate;
+      console.log('Selected competence date:', this.competenceDate);
+    }
+    
+  }
+
+  onSearch(): void {
+    if (this.competenceDateValid) {
+      console.log('Searching for competence date:', this.competenceDate);
+      this.searchCompetenceDate = this.competenceDate;
+      this.competenceDateValid = false;
+    }
+
+  }
+
+  private buildCompetenceDate(date: Date): string {
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = '01';
+    return `${year}-${month}-${day}`;
   }
 
 }
