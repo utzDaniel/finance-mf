@@ -1,0 +1,50 @@
+@if (visible) {
+  <div id="salary-detail-delete-confirm-backdrop" class="backdrop">
+    <section
+      id="salary-detail-delete-confirm-modal"
+      class="modal"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="salary-detail-delete-confirm-title"
+    >
+      <header id="salary-detail-delete-confirm-header" class="modal-header">
+        <h3 id="salary-detail-delete-confirm-title" class="modal-title">Confirmar remoção</h3>
+        <button
+          id="salary-detail-delete-confirm-close"
+          type="button"
+          class="close-btn"
+          [disabled]="deleting"
+          (click)="close.emit()"
+          aria-label="Fechar"
+        >
+          x
+        </button>
+      </header>
+
+      <div id="salary-detail-delete-confirm-body" class="modal-body">
+        <p id="salary-detail-delete-confirm-message" class="confirm-text">{{ message }}</p>
+      </div>
+
+      <footer id="salary-detail-delete-confirm-actions" class="modal-actions">
+        <button
+          id="salary-detail-delete-confirm-cancel"
+          type="button"
+          class="btn btn-outline"
+          [disabled]="deleting"
+          (click)="close.emit()"
+        >
+          Cancelar
+        </button>
+        <button
+          id="salary-detail-delete-confirm-submit"
+          type="button"
+          class="btn btn-danger"
+          [disabled]="deleting"
+          (click)="confirm.emit()"
+        >
+          {{ deleting ? 'Removendo...' : 'Remover' }}
+        </button>
+      </footer>
+    </section>
+  </div>
+}

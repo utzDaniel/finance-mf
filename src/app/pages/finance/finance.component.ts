@@ -5,6 +5,7 @@ import { ToastModule } from 'primeng/toast';
 
 import { FinanceSearchCardComponent } from './components/finance-search-card/finance-search-card.component';
 import { MonthlySummaryCardComponent } from './components/monthly-summary-card/monthly-summary-card.component';
+import { SalaryDetailCardComponent } from './components/salary-detail-card/salary-detail-card.component';
 
 @Component({
   selector: 'app-finance',
@@ -13,7 +14,8 @@ import { MonthlySummaryCardComponent } from './components/monthly-summary-card/m
     CommonModule, 
     ToastModule, 
     FinanceSearchCardComponent,
-    MonthlySummaryCardComponent
+    MonthlySummaryCardComponent,
+    SalaryDetailCardComponent,
   ],
   providers: [MessageService],
   templateUrl: './finance.component.html',

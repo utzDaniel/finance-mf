@@ -1,0 +1,121 @@
+@if (visible) {
+  <div id="salary-detail-modal-backdrop" class="backdrop">
+    <section
+      id="salary-detail-modal"
+      class="modal"
+      [attr.data-mode]="mode"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="salary-detail-modal-title"
+    >
+      <header id="salary-detail-modal-header" class="modal-header">
+        <h3 id="salary-detail-modal-title" class="modal-title">
+          {{ mode === 'add' ? 'Adicionar Detalhe' : 'Editar Detalhe' }}
+        </h3>
+        <button
+          id="salary-detail-modal-close"
+          type="button"
+          class="close-btn"
+          (click)="close.emit()"
+          [disabled]="saving"
+          aria-label="Fechar"
+        >
+          x
+        </button>
+      </header>
+
+      <div id="salary-detail-modal-body" class="modal-body">
+        <div id="salary-detail-form" class="form-grid">
+          <div id="salary-detail-field-code" class="field">
+            <label id="salary-detail-label-code" for="salary-detail-input-code" style="font-size: 10px; font-weight: 400; line-height: 1.1;">Código</label>
+            <input
+              id="salary-detail-input-code"
+              type="text"
+              inputmode="numeric"
+              maxlength="5"
+              [value]="model.code"
+              (keydown)="onDigitsKeydown($event)"
+              (input)="onDigitsInput($event, 'code', 5)"
+              (paste)="onDigitsPaste($event, 'code', 5)"
+            />
+            <span id="salary-detail-error-code" class="field-error">{{ fieldErrors['code'] || '' }}</span>
+          </div>
+
+          <div id="salary-detail-field-name" class="field span-2">
+            <label id="salary-detail-label-name" for="salary-detail-input-name" style="font-size: 10px; font-weight: 400; line-height: 1.1;">Nome</label>
+            <input id="salary-detail-input-name" type="text" maxlength="100" [(ngModel)]="model.name" />
+            <span id="salary-detail-error-name" class="field-error">{{ fieldErrors['name'] || '' }}</span>
+          </div>
+
+          <div id="salary-detail-field-type" class="field">
+            <label id="salary-detail-label-type" for="salary-detail-input-type" style="font-size: 10px; font-weight: 400; line-height: 1.1;">Tipo</label>
+            <select id="salary-detail-input-type" [(ngModel)]="model.idType">
+              <option id="salary-detail-input-type-empty" [ngValue]="null">Selecione</option>
+              @for (typeOption of typeOptions; track typeOption.id) {
+                <option [id]="'salary-detail-input-type-option-' + typeOption.id" [ngValue]="typeOption.id">
+                  {{ typeOption.label }}
+                </option>
+              }
+            </select>
+            <span id="salary-detail-error-idType" class="field-error">{{ fieldErrors['idType'] || '' }}</span>
+          </div>
+
+          <div id="salary-detail-field-quantity" class="field">
+            <label id="salary-detail-label-quantity" for="salary-detail-input-quantity" style="font-size: 10px; font-weight: 400; line-height: 1.1;">Quantidade</label>
+            <input
+              id="salary-detail-input-quantity"
+              type="text"
+              inputmode="numeric"
+              maxlength="3"
+              [value]="model.quantity"
+              (keydown)="onDigitsKeydown($event)"
+              (input)="onDigitsInput($event, 'quantity', 3)"
+              (paste)="onDigitsPaste($event, 'quantity', 3)"
+            />
+            <span id="salary-detail-error-quantity" class="field-error">{{ fieldErrors['quantity'] || '' }}</span>
+          </div>
+
+          <div id="salary-detail-field-amount" class="field">
+            <label id="salary-detail-label-amount" for="salary-detail-input-amount-inner" style="font-size: 10px; font-weight: 400; line-height: 1.1;">Valor (R$)</label>
+            <p-inputnumber
+              id="salary-detail-input-amount"
+              inputId="salary-detail-input-amount-inner"
+              [(ngModel)]="model.amount"
+              [minFractionDigits]="2"
+              [maxFractionDigits]="2"
+              [min]="0"
+            />
+            <span id="salary-detail-error-amount" class="field-error">{{ fieldErrors['amount'] || '' }}</span>
+          </div>
+
+          <div id="salary-detail-field-feedback" class="field full">
+            <span id="salary-detail-save-feedback" class="selected-count">
+              {{ saving ? 'Salvando...' : '' }}
+            </span>
+          </div>
+        </div>
+      </div>
+
+      <footer id="salary-detail-modal-actions" class="modal-actions">
+        <button
+          id="salary-detail-modal-cancel"
+          type="button"
+          class="btn btn-outline"
+          [disabled]="saving"
+          (click)="close.emit()"
+        >
+          Cancelar
+        </button>
+        <button
+          id="salary-detail-modal-save"
+          type="button"
+          class="btn btn-primary"
+          [disabled]="saving"
+          (click)="save.emit()"
+        >
+          {{ saving ? 'Salvando...' : 'Salvar' }}
+        </button>
+      </footer>
+    </section>
+  </div>
+}

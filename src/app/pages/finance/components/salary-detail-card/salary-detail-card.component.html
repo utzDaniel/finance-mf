@@ -1,0 +1,166 @@
+<section id="salary-detail-card" class="card">
+  <div id="salary-detail-header" class="card-header">
+    <div id="salary-detail-title-wrap" class="title-wrap">
+      <h2 id="salary-detail-title" class="card-title">Detalhes do Salário</h2>
+    </div>
+
+    <div id="salary-detail-header-actions" class="header-actions">
+      <button
+        id="salary-detail-delete-selected-button"
+        type="button"
+        class="btn btn-danger"
+        [disabled]="selectedCount === 0 || loading"
+        (click)="openDeleteConfirmForSelected()"
+      >
+        Remover
+      </button>
+      <button
+        id="salary-detail-add-button"
+        type="button"
+        class="btn btn-primary"
+        [disabled]="!competenceDate || loading"
+        (click)="openAddModal()"
+      >
+        Adicionar
+      </button>
+    </div>
+  </div>
+
+  @if (loading) {
+    <div id="salary-detail-loading" class="empty-state">Carregando detalhes salariais...</div>
+  } @else if (salaryPage && rows.length > 0) {
+    <div id="salary-detail-table-wrap" class="table-wrap">
+      <table id="salary-detail-table">
+        <thead id="salary-detail-thead">
+          <tr id="salary-detail-header-row">
+            <th id="salary-detail-header-select">
+              <input
+                id="salary-detail-select-all"
+                type="checkbox"
+                [(ngModel)]="selectAllChecked"
+                (ngModelChange)="onToggleSelectAll()"
+              />
+            </th>
+            <th id="salary-detail-header-code">Código</th>
+            <th id="salary-detail-header-name">Nome</th>
+            <th id="salary-detail-header-quantity">Qtd</th>
+            <th id="salary-detail-header-amount">Valor (R$)</th>
+            <th id="salary-detail-header-actions">Ações</th>
+          </tr>
+        </thead>
+
+        <tbody id="salary-detail-tbody">
+          @for (detail of rows; track detail.id) {
+            <tr [id]="'salary-detail-row-' + detail.id">
+              <td [id]="'salary-detail-select-cell-' + detail.id">
+                <input
+                  [id]="'salary-detail-select-row-' + detail.id"
+                  type="checkbox"
+                  [checked]="isSelected(detail.id)"
+                  (change)="onToggleRowSelection(detail.id, $any($event.target).checked)"
+                />
+              </td>
+              <td [id]="'salary-detail-code-' + detail.id">{{ detail.code }}</td>
+              <td [id]="'salary-detail-name-' + detail.id">{{ detail.name }}</td>
+              <td [id]="'salary-detail-quantity-' + detail.id">{{ detail.quantity }}</td>
+              <td [id]="'salary-detail-amount-' + detail.id" [class]="getValueClass(detail.idType)">
+                {{ formatCurrency(detail.amount) }}
+              </td>
+              <td [id]="'salary-detail-actions-' + detail.id">
+                <div class="cell-actions" [id]="'salary-detail-actions-wrap-' + detail.id">
+                  <button
+                    [id]="'salary-detail-edit-' + detail.id"
+                    type="button"
+                    class="icon-btn"
+                    (click)="openEditModal(detail)"
+                    aria-label="Editar detalhe"
+                    title="Editar"
+                  >
+                    <i [id]="'salary-detail-edit-icon-' + detail.id" class="pi pi-pencil"></i>
+                  </button>
+                  <button
+                    [id]="'salary-detail-delete-' + detail.id"
+                    type="button"
+                    class="icon-btn icon-btn-danger"
+                    (click)="openDeleteConfirmForRow(detail)"
+                    aria-label="Remover detalhe"
+                    title="Remover"
+                  >
+                    <i [id]="'salary-detail-delete-icon-' + detail.id" class="pi pi-trash"></i>
+                  </button>
+                </div>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+
+    <div id="salary-detail-footer" class="list-footer">
+      <span id="salary-detail-selected-count" class="selected-count">
+        {{ selectedCount }} de {{ totalElements }} selecionado(s)
+      </span>
+
+      <div id="salary-detail-pagination" class="pagination">
+        <button
+          id="salary-detail-page-prev"
+          type="button"
+          class="btn btn-outline"
+          [disabled]="!canGoPrevious"
+          (click)="changePage(page - 1)"
+        >
+          <
+        </button>
+
+        <span id="salary-detail-page-current" class="selected-count">
+          Página {{ currentPageNumber }} de {{ totalPages }}
+        </span>
+
+        <button
+          id="salary-detail-page-next"
+          type="button"
+          class="btn btn-outline"
+          [disabled]="!canGoNext"
+          (click)="changePage(page + 1)"
+        >
+          >
+        </button>
+
+        <label id="salary-detail-page-size-label" for="salary-detail-page-size" class="selected-count">Itens</label>
+        <select
+          id="salary-detail-page-size"
+          class="page-size"
+          [ngModel]="size"
+          (ngModelChange)="onPageSizeChange($event)"
+        >
+          @for (sizeOption of sizeOptions; track sizeOption) {
+            <option [value]="sizeOption">{{ sizeOption }}</option>
+          }
+        </select>
+      </div>
+    </div>
+  } @else {
+    <div id="salary-detail-empty" class="empty-state">
+      Nenhum detalhe salarial encontrado
+    </div>
+  }
+</section>
+
+<app-salary-detail-form-modal
+  [visible]="showDetailModal"
+  [mode]="detailModalMode"
+  [saving]="savingDetail"
+  [model]="detailForm"
+  [fieldErrors]="fieldErrors"
+  [typeOptions]="typeOptions"
+  (close)="closeDetailModal()"
+  (save)="saveDetail()"
+/>
+
+<app-salary-detail-delete-confirm-modal
+  [visible]="showDeleteConfirmModal"
+  [deleting]="deleting"
+  [message]="deleteConfirmationMessage"
+  (close)="closeDeleteConfirmModal()"
+  (confirm)="confirmDelete()"
+/>

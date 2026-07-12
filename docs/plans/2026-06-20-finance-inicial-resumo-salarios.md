@@ -6,10 +6,6 @@ Autor: Copilot
 
 Data: 2026-06-20
 
-Data de conclusao: 2026-06-27
-
-Data de ultima revisao: 2026-07-05
-
 ## TL;DR
 
 Implementacao parcial do escopo inicial da tela de financas no frontend finance-mf: filtro de competencia com pesquisa, bloco de resumo salarial com dados do usuario e da familia, e fluxo de edicao do salario do usuario consumindo o finance-api. Estados dedicados de carregamento/erro/vazio e testes de componente nao foram entregues.
